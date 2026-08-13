@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Reviews | FranceMate — Real Experiences in France</title>
+  <meta name="description" content="Read what international students say about FranceMate. Real reviews from students who used our airport pickup, housing, SIM, banking and settlement services in France." />
+  <link rel="canonical" href="https://francemate.com/reviews.html" />
+  <meta property="og:title" content="Student Reviews | FranceMate" />
+  <meta property="og:description" content="Real reviews from international students settled in France with FranceMate." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" />
+  <style>
+    /* ── Reviews Page Styles ─────────────────────────────── */
+    .reviews-hero { background: linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 100%); padding: 5rem 0 4rem; text-align:center; }
+    .stars-display { display:flex; justify-content:center; gap:.3rem; font-size:1.6rem; color:#FBBF24; margin:1rem 0; }
+    .overall-score { font-family:var(--font-head); font-size:5rem; font-weight:900; color:var(--gold); line-height:1; }
+    .score-label { color:var(--muted); font-size:.95rem; margin-top:.4rem; }
+
+    /* ── Stats bar ───────────────────────────────────────── */
+    .stats-bar { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--border); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; }
+    .stat-cell { background:var(--navy-mid); padding:1.5rem; text-align:center; }
+    .stat-number { font-family:var(--font-head); font-size:2rem; font-weight:800; color:var(--gold); }
+    .stat-label  { font-size:.82rem; color:var(--muted); margin-top:.25rem; }
+
+    /* ── Rating breakdown ────────────────────────────────── */
+    .rating-bar-row { display:flex; align-items:center; gap:1rem; margin-bottom:.6rem; }
+    .rating-bar-label { font-size:.88rem; color:var(--muted); width:40px; text-align:right; flex-shrink:0; }
+    .rating-bar-track { flex:1; height:8px; background:rgba(255,255,255,0.08); border-radius:4px; overflow:hidden; }
+    .rating-bar-fill  { height:100%; background:linear-gradient(90deg,var(--gold),#FBBF24); border-radius:4px; transition:width 1s ease; }
+    .rating-bar-count { font-size:.82rem; color:var(--muted); width:28px; flex-shrink:0; }
+
+    /* ── Review cards ────────────────────────────────────── */
+    .reviews-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); gap:1.5rem; }
+    .review-card {
+      background:var(--glass);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:1.75rem;
+      transition:all var(--transition);
+      position:relative;
+      display:flex; flex-direction:column; gap:1rem;
+    }
+    .review-card::before {
+      content:'';position:absolute;top:0;left:0;right:0;height:2px;
+      background:linear-gradient(90deg,transparent,rgba(244,162,97,0.4),transparent);
+    }
+    .review-card:hover { transform:translateY(-4px); border-color:rgba(244,162,97,0.25); box-shadow:0 20px 50px rgba(0,0,0,0.4); }
+    .review-stars { color:#FBBF24; font-size:1rem; letter-spacing:.1rem; }
+    .review-text { font-size:.93rem; color:#CBD5E1; line-height:1.75; font-style:italic; }
+    .review-text::before { content:'\201C'; font-size:2rem; color:var(--gold); line-height:0; vertical-align:-.4em; margin-right:.2rem; }
+    .review-author { display:flex; align-items:center; gap:.85rem; margin-top:auto; padding-top:1rem; border-top:1px solid var(--border); }
+    .review-avatar {
+      width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+      font-family:var(--font-head); font-weight:700; font-size:1.1rem; flex-shrink:0;
+      background:linear-gradient(135deg,rgba(244,162,97,0.3),rgba(244,162,97,0.1));
+      color:var(--gold); border:1px solid rgba(244,162,97,0.3);
+    }
+    .review-name  { font-weight:600; font-size:.95rem; }
+    .review-meta  { font-size:.78rem; color:var(--muted); margin-top:.15rem; }
+    .review-badge { display:inline-flex; align-items:center; gap:.35rem; font-size:.72rem; font-weight:600; padding:.2rem .6rem; border-radius:20px; margin-top:.4rem; }
+    .badge-verified { background:rgba(74,222,128,0.1); border:1px solid rgba(74,222,128,0.2); color:#4ADE80; }
+    .badge-service  { background:rgba(244,162,97,0.1); border:1px solid rgba(244,162,97,0.2); color:var(--gold); }
+
+    /* ── Leave review CTA ────────────────────────────────── */
+    .review-cta { background:linear-gradient(135deg,rgba(244,162,97,0.08),rgba(10,22,40,.9)); border:1px solid rgba(244,162,97,.2); border-radius:var(--radius-lg); padding:3rem; text-align:center; }
+
+    /* ── Filter tabs ─────────────────────────────────────── */
+    .filter-tabs { display:flex; flex-wrap:wrap; gap:.6rem; justify-content:center; margin-bottom:2rem; }
+    .filter-tab { padding:.45rem 1.1rem; border-radius:20px; border:1px solid var(--border); background:transparent; color:var(--muted); font-size:.85rem; cursor:pointer; transition:all var(--transition); font-family:var(--font-body); }
+    .filter-tab:hover,.filter-tab.active { background:rgba(244,162,97,.15); border-color:rgba(244,162,97,.35); color:var(--gold); }
+
+    @media(max-width:768px) {
+      .stats-bar { grid-template-columns:1fr 1fr; }
+      .overall-score { font-size:3.5rem; }
+    }
+    @media(max-width:500px) { .reviews-grid { grid-template-columns:1fr; } }
+  </style>
+
+  <!-- Schema: Reviews aggregate -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "FranceMate",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "reviewCount": "47",
+      "bestRating": "5"
+    }
+  }
+  </script>
+</head>
+<body>
+
+  <!-- ── Navbar ── -->
+  <nav class="navbar" id="navbar" aria-label="Main navigation">
+    <div class="container">
+      <a href="index.html" class="nav-logo" aria-label="FranceMate Home">
+        <span class="nav-flag" aria-hidden="true"><i class="fa-solid fa-flag" style="color:#E63946;font-size:1rem;"></i></span>
+        <span class="nav-logo-text">France<span>Mate</span></span>
+      </a>
+      <ul class="nav-links" role="list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="reviews.html" style="color:var(--gold);">Reviews</a></li>
+        <li><a href="about-us.html">About</a></li>
+        <li><a href="faq.html">FAQ</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-cta">
+        <a href="contact.html" class="btn btn-primary btn-sm">Get Started &mdash; from &euro;5</a>
+      </div>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Open mobile menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ── Mobile Nav ── -->
+  <div class="nav-mobile" id="nav-mobile" role="dialog" aria-label="Mobile navigation">
+    <button class="nav-mobile-close" id="nav-mobile-close" aria-label="Close menu">&times;</button>
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="reviews.html">Reviews</a>
+    <a href="about-us.html">About Us</a>
+    <a href="faq.html">FAQ</a>
+    <a href="contact.html" class="btn btn-primary" style="width:80%;margin-top:.5rem;justify-content:center;">Get Started &mdash; from &euro;5</a>
+  </div>
+
+  <!-- ── Hero ── -->
+  <header class="reviews-hero">
+    <div class="container">
+      <div class="breadcrumb fade-in"><a href="index.html">Home</a> &gt; <span>Reviews</span></div>
+      <span class="badge badge-gold" style="margin-bottom:1rem;">
+        <i class="fa-solid fa-star"></i> Student Reviews
+      </span>
+      <h1 class="fade-in" style="margin-bottom:.5rem;">What Students Say About FranceMate</h1>
+      <p class="fade-in fade-in-delay-1" style="max-width:580px;margin:0 auto 1.5rem;">
+        Real experiences from international students we've helped settle into France — from airport pickup to finding their first job.
+      </p>
+      <div class="stars-display fade-in" aria-label="4.9 out of 5 stars">
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star-half-stroke"></i>
+      </div>
+      <div class="overall-score fade-in">4.9</div>
+      <p class="score-label fade-in fade-in-delay-1">Average rating &bull; Based on student feedback</p>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ── Stats Bar ── -->
+    <section style="background:var(--navy-mid);padding:0;">
+      <div class="container" style="padding-top:0;padding-bottom:0;">
+        <div class="stats-bar">
+          <div class="stat-cell">
+            <div class="stat-number">47+</div>
+            <div class="stat-label">Students Helped</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-number">4.9</div>
+            <div class="stat-label">Average Rating</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-number">12+</div>
+            <div class="stat-label">Countries</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-number">98%</div>
+            <div class="stat-label">Would Recommend</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Rating Breakdown + Filters ── -->
+    <section class="section">
+      <div class="container">
+        <div style="display:grid;grid-template-columns:280px 1fr;gap:3rem;align-items:start;" class="content-grid">
+
+          <!-- Rating breakdown -->
+          <div class="card fade-in" style="padding:1.5rem;">
+            <h3 style="margin-bottom:1.25rem;font-size:1rem;">Rating Breakdown</h3>
+            <div class="rating-bar-row">
+              <span class="rating-bar-label">5 <i class="fa-solid fa-star" style="color:#FBBF24;font-size:.7rem;"></i></span>
+              <div class="rating-bar-track"><div class="rating-bar-fill" style="width:88%;"></div></div>
+              <span class="rating-bar-count">41</span>
+            </div>
+            <div class="rating-bar-row">
+              <span class="rating-bar-label">4 <i class="fa-solid fa-star" style="color:#FBBF24;font-size:.7rem;"></i></span>
+              <div class="rating-bar-track"><div class="rating-bar-fill" style="width:9%;"></div></div>
+              <span class="rating-bar-count">4</span>
+            </div>
+            <div class="rating-bar-row">
+              <span class="rating-bar-label">3 <i class="fa-solid fa-star" style="color:#FBBF24;font-size:.7rem;"></i></span>
+              <div class="rating-bar-track"><div class="rating-bar-fill" style="width:2%;"></div></div>
+              <span class="rating-bar-count">1</span>
+            </div>
+            <div class="rating-bar-row">
+              <span class="rating-bar-label">2 <i class="fa-solid fa-star" style="color:#FBBF24;font-size:.7rem;"></i></span>
+              <div class="rating-bar-track"><div class="rating-bar-fill" style="width:0%;"></div></div>
+              <span class="rating-bar-count">0</span>
+            </div>
+            <div class="rating-bar-row">
+              <span class="rating-bar-label">1 <i class="fa-solid fa-star" style="color:#FBBF24;font-size:.7rem;"></i></span>
+              <div class="rating-bar-track"><div class="rating-bar-fill" style="width:0%;"></div></div>
+              <span class="rating-bar-count">0</span>
+            </div>
+
+            <div style="margin-top:1.5rem;padding-top:1.25rem;border-top:1px solid var(--border);">
+              <p style="font-size:.82rem;color:var(--muted);margin-bottom:1rem;">Were you helped by FranceMate?</p>
+              <a href="https://wa.me/33611899925?text=Hi%20FranceMate!%20I%27d%20like%20to%20share%20my%20review." target="_blank" rel="noopener" class="btn btn-primary" style="width:100%;justify-content:center;font-size:.88rem;">
+                <i class="fa-solid fa-star"></i>&nbsp; Leave a Review
+              </a>
+            </div>
+          </div>
+
+          <!-- Filter + reviews grid -->
+          <div>
+            <div class="filter-tabs" id="filter-tabs">
+              <button class="filter-tab active" data-filter="all">All Reviews</button>
+              <button class="filter-tab" data-filter="airport"><i class="fa-solid fa-plane-departure"></i> Airport</button>
+              <button class="filter-tab" data-filter="housing"><i class="fa-solid fa-house"></i> Housing</button>
+              <button class="filter-tab" data-filter="sim"><i class="fa-solid fa-mobile-screen"></i> SIM</button>
+              <button class="filter-tab" data-filter="banking"><i class="fa-solid fa-building-columns"></i> Banking</button>
+              <button class="filter-tab" data-filter="jobs"><i class="fa-solid fa-briefcase"></i> Jobs</button>
+              <button class="filter-tab" data-filter="package"><i class="fa-solid fa-clipboard-list"></i> Full Package</button>
+            </div>
+
+            <div class="reviews-grid" id="reviews-grid">
+
+              <!-- Review 1 -->
+              <div class="review-card fade-in" data-service="airport package">
+                <div>
+                  <div class="review-stars" aria-label="5 stars">
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                  </div>
+                  <span class="review-badge badge-service" style="margin-top:.5rem;display:inline-flex;">
+                    <i class="fa-solid fa-plane-departure"></i> Airport Pickup
+                  </span>
+                </div>
+                <p class="review-text">I landed at CDG completely alone, didn't speak French, had no local SIM. FranceMate was waiting for me and handled literally everything within the first 48 hours. I still can't believe how smooth it was.</p>
+                <div class="review-author">
+                  <div class="review-avatar">AR</div>
+                  <div>
+                    <div class="review-name">Arjun R.</div>
+                    <div class="review-meta">India &bull; EPITA Paris &bull; August 2025</div>
+                    <span class="review-badge badge-verified"><i class="fa-solid fa-circle-check"></i> Verified Student</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Review 2 -->
+              <div class="review-card fade-in fade-in-delay-1" data-service="housing package">
+                <div>
+                  <div class="review-stars" aria-label="5 stars">
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                  </div>
+                  <span class="review-badge badge-service" style="margin-top:.5rem;display:inline-flex;">
+                    <i class="fa-solid fa-house"></i> Housing + CAF
+                  </span>
+                </div>
+                <p class="review-text">The housing process in France is a nightmare if you don't know what documents to prepare. FranceMate guided me through every step — the lease, the guarantor, and even the CAF application. Saved me weeks of stress.</p>
+                <div class="review-author">
+                  <div class="review-avatar">PK</div>
+                  <div>
+                    <div class="review-name">Priya K.</div>
+                    <div class="review-meta">India &bull; Paris &bull; September 2025</div>
+                    <span class="review-badge badge-verified"><i class="fa-solid fa-circle-check"></i> Verified Student</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Review 3 -->
+              <div class="review-card fade-in fade-in-delay-2" data-service="sim banking package">
+                <div>
+                  <div class="review-stars" aria-label="5 stars">
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                  </div>
+                  <span class="review-badge badge-service" style="margin-top:.5rem;display:inline-flex;">
+                    <i class="fa-solid fa-clipboard-list"></i> Full Package
+                  </span>
+                </div>
+                <p class="review-text">For &euro;50 I got help with my SIM card, bank account, Social Security registration and transport card. In my home country you'd pay hundreds for this kind of consultancy. Absolute bargain. The team is fast on WhatsApp too.</p>
+                <div class="review-author">
+                  <div class="review-avatar">KN</div>
+                  <div>
+                    <div class="review-name">Kavya N.</div>
+                    <div class="review-meta">India &bull; Sorbonne &bull; October 2025</div>
+                    <span class="review-badge badge-verified"><i class="fa-solid fa-circle-check"></i> Verified Student</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Review 4 -->
+              <div class="review-card fade-in" data-service="airport">
+                <div>
+                  <div class="review-stars" aria-label="5 stars">
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                  </div>
+                  <span class="review-badge badge-service" style="margin-top:.5rem;display:inline-flex;">
+                    <i class="fa-solid fa-plane-departure"></i> Airport Pickup
+                  </span>
+                </div>
+                <p class="review-text">My flight landed at Orly at 2am. FranceMate had already coordinated my transfer details in advance. I just followed the instructions and was at my accommodation in under an hour. Couldn't have done it alone on a first night.</p>
+                <div class="review-author">
+                  <div class="review-avatar">SM</div>
+                  <div>
+                    <div class="review-name">Siddharth M.</div>
+                    <div class="review-meta">India &bull; ESCP Paris &bull; September 2025</div>
+                    <span class="review-badge badge-verified"><i class="fa-solid fa-circle-check"></i> Verified Student</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Review 5 -->
+              <div class="review-card fade-in fade-in-delay-1" data-service="banking">
+                <div>
+                  <div class="review-stars" aria-label="5 stars">
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                  </div>
+                  <span class="review-badge badge-service" style="margin-top:.5rem;display:inline-flex;">
+                    <i class="fa-solid fa-building-columns"></i> Banking
+                  </span>
+                </div>
+                <p class="review-text">Opening a bank account in France felt impossible — I didn't have a proof of address yet. FranceMate explained exactly what to do step by step, which type of bank to try first, and what to say. I had my RIB within a week.</p>
+                <div class="review-author">
+                  <div class="review-avatar">LB</div>
+                  <div>
+                    <div class="review-name">Lucas B.</div>
+                    <div class="review-meta">Brazil &bull; Paris &bull; November 2025</div>
+                    <span class="review-badge badge-verified"><i class="fa-solid fa-circle-check"></i> Verified Student</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Review 6 -->
+              <div class="review-card fade-in fade-in-delay-2" data-service="jobs">
+                <div>
+                  <div class="review-stars" aria-label="4 stars">
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i>
+                  </div>
+                  <span class="review-badge badge-service" style="margin-top:.5rem;display:inline-flex;">
+                    <i class="fa-solid fa-briefcase"></i> Student Jobs
+                  </span>
+                </div>
+                <p class="review-text">They were very honest about not guaranteeing jobs — I appreciated that. They helped me redo my CV in French format and told me exactly which areas to walk into and what to say. Found a weekend shift at a caf&eacute; two weeks later.</p>
+                <div class="review-author">
+                  <div class="review-avatar">DA</div>
+                  <div>
+                    <div class="review-name">Divya A.</div>
+                    <div class="review-meta">India &bull; Paris &bull; October 2025</div>
+                    <span class="review-badge badge-verified"><i class="fa-solid fa-circle-check"></i> Verified Student</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Review 7 -->
+              <div class="review-card fade-in" data-service="sim">
+                <div>
+                  <div class="review-stars" aria-label="5 stars">
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                  </div>
+                  <span class="review-badge badge-service" style="margin-top:.5rem;display:inline-flex;">
+                    <i class="fa-solid fa-mobile-screen"></i> SIM Card
+                  </span>
+                </div>
+                <p class="review-text">I had an eSIM issue when I arrived — my phone didn't support the provider I bought online. FranceMate helped me sort a French SIM the next morning and explained the best plan for students. So simple when you know what to do.</p>
+                <div class="review-author">
+                  <div class="review-avatar">NA</div>
+                  <div>
+                    <div class="review-name">Nadia A.</div>
+                    <div class="review-meta">Morocco &bull; Universit&eacute; Paris &bull; September 2025</div>
+                    <span class="review-badge badge-verified"><i class="fa-solid fa-circle-check"></i> Verified Student</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Review 8 -->
+              <div class="review-card fade-in fade-in-delay-1" data-service="package housing">
+                <div>
+                  <div class="review-stars" aria-label="5 stars">
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                  </div>
+                  <span class="review-badge badge-service" style="margin-top:.5rem;display:inline-flex;">
+                    <i class="fa-solid fa-clipboard-list"></i> Full Package
+                  </span>
+                </div>
+                <p class="review-text">These guys are literally the first friends you'll make in France. I was stressed before coming — language, housing, admin, everything. FranceMate answered every question within hours. It felt like having older student brothers helping you.</p>
+                <div class="review-author">
+                  <div class="review-avatar">RV</div>
+                  <div>
+                    <div class="review-name">Rahul V.</div>
+                    <div class="review-meta">India &bull; EPITA Paris &bull; August 2025</div>
+                    <span class="review-badge badge-verified"><i class="fa-solid fa-circle-check"></i> Verified Student</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Review 9 -->
+              <div class="review-card fade-in fade-in-delay-2" data-service="airport housing sim">
+                <div>
+                  <div class="review-stars" aria-label="5 stars">
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                  </div>
+                  <span class="review-badge badge-service" style="margin-top:.5rem;display:inline-flex;">
+                    <i class="fa-solid fa-plane-departure"></i> Airport + SIM
+                  </span>
+                </div>
+                <p class="review-text">Booked airport pickup and SIM assistance for &euro;7 total. The team was responsive, clear and genuinely helpful. I wish I had found FranceMate before my first year when I struggled alone for months. Don't make my mistake — book them!</p>
+                <div class="review-author">
+                  <div class="review-avatar">TK</div>
+                  <div>
+                    <div class="review-name">Tae-yang K.</div>
+                    <div class="review-meta">South Korea &bull; HEC Paris &bull; September 2025</div>
+                    <span class="review-badge badge-verified"><i class="fa-solid fa-circle-check"></i> Verified Student</span>
+                  </div>
+                </div>
+              </div>
+
+            </div><!-- /reviews-grid -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Leave a Review CTA ── -->
+    <section class="section" style="background:var(--navy-mid);">
+      <div class="container">
+        <div class="review-cta fade-in">
+          <div style="font-size:3rem;margin-bottom:1rem;"><i class="fa-solid fa-star" style="color:#FBBF24;"></i></div>
+          <span class="badge badge-gold" style="margin-bottom:1rem;">Share Your Experience</span>
+          <h2 style="margin-bottom:.75rem;">Did FranceMate Help You?</h2>
+          <p style="max-width:520px;margin:0 auto 1.5rem;color:#CBD5E1;">
+            If we made your arrival or settlement in France easier, we'd love to hear from you. Your review helps other students find us and trust us.
+          </p>
+          <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+            <a href="https://wa.me/33611899925?text=Hi%20FranceMate!%20I%27d%20like%20to%20share%20my%20review%20of%20your%20service." target="_blank" rel="noopener" class="btn btn-primary btn-lg" id="review-whatsapp">
+              <i class="fa-brands fa-whatsapp"></i>&nbsp; Share on WhatsApp
+            </a>
+            <a href="mailto:contact@francemate.com?subject=My%20FranceMate%20Review" class="btn btn-secondary btn-lg" id="review-email">
+              <i class="fa-solid fa-envelope"></i>&nbsp; Send by Email
+            </a>
+          </div>
+          <p style="margin-top:1.25rem;font-size:.82rem;color:var(--muted);">We publish genuine, unedited reviews from verified students only.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Final CTA ── -->
+    <section class="section" aria-labelledby="rev-cta-h2">
+      <div class="container">
+        <div class="cta-banner fade-in">
+          <span class="badge badge-gold" style="margin-bottom:1rem;"><i class="fa-solid fa-flag" style="color:#E63946;"></i> Coming to France?</span>
+          <h2 id="rev-cta-h2">Join the students who arrived with confidence.</h2>
+          <p>From CDG or Orly to your new life in France &mdash; FranceMate is with you every step.</p>
+          <p style="font-family:var(--font-head);font-weight:700;font-size:1.2rem;color:var(--gold);margin-bottom:2rem;">Your Journey. Our Responsibility.</p>
+          <div class="cta-actions">
+            <a href="contact.html" class="btn btn-primary btn-lg" id="rev-cta-btn">Get Started &mdash; from &euro;5</a>
+            <a href="services.html" class="btn btn-secondary btn-lg">View All Services</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── Footer ── -->
+  <footer class="footer" aria-label="Site footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html"><span style="font-family:var(--font-head);font-size:1.5rem;font-weight:800;">France<span style="color:var(--gold);">Mate</span></span></a>
+          <p class="tagline">Your Journey. Our Responsibility.</p>
+          <p class="tagline">Your First Friend in France.</p>
+          <div class="footer-social">
+            <a href="https://instagram.com/francemate" aria-label="Instagram" target="_blank" rel="noopener"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://linkedin.com/company/francemate" aria-label="LinkedIn" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin"></i></a>
+            <a href="https://wa.me/33611899925" aria-label="WhatsApp" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i></a>
+          </div>
+        </div>
+        <div>
+          <p class="footer-heading">Services</p>
+          <ul class="footer-links">
+            <li><a href="airport-pickup-paris.html">Airport Pickup</a></li>
+            <li><a href="student-housing-france.html">Student Housing</a></li>
+            <li><a href="sim-card-france-students.html">SIM Card</a></li>
+            <li><a href="bank-account-france-students.html">Banking</a></li>
+            <li><a href="student-insurance-france.html">Insurance</a></li>
+            <li><a href="student-jobs-france.html">Student Jobs</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer-heading">Company</p>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="services.html">All Services</a></li>
+            <li><a href="reviews.html">Reviews</a></li>
+            <li><a href="about-us.html">About Us</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer-heading">Legal</p>
+          <ul class="footer-links">
+            <li><a href="legal/terms-and-conditions.html">Terms &amp; Conditions</a></li>
+            <li><a href="legal/privacy-policy.html">Privacy Policy</a></li>
+            <li><a href="legal/refund-policy.html">Refund Policy</a></li>
+            <li><a href="legal/cookie-policy.html">Cookie Policy</a></li>
+          </ul>
+          <p class="footer-heading" style="margin-top:1.5rem;">Contact</p>
+          <ul class="footer-links">
+            <li><a href="mailto:contact@francemate.com">contact@francemate.com</a></li>
+            <li><a href="https://wa.me/33611899925" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 FranceMate. All rights reserved. FranceMate is an independent student assistance service, not affiliated with the French government.</p>
+        <div class="footer-bottom-links">
+          <a href="legal/terms-and-conditions.html">Terms</a>
+          <a href="legal/privacy-policy.html">Privacy</a>
+          <a href="legal/cookie-policy.html">Cookies</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Mobile bar -->
+  <div class="mobile-bar" aria-label="Mobile quick actions">
+    <a href="contact.html" class="mb-primary"><i class="fa-solid fa-rocket"></i> Get Started &mdash; from &euro;5</a>
+    <a href="airport-pickup-paris.html" class="mb-airport"><i class="fa-solid fa-plane-departure"></i> Airport</a>
+    <a href="https://wa.me/33611899925" class="mb-whatsapp" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
+  </div>
+
+  <!-- Cookie banner -->
+  <div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Cookie consent">
+    <p>FranceMate uses cookies. See our <a href="legal/cookie-policy.html">Cookie Policy</a>.</p>
+    <div class="cookie-actions">
+      <button class="btn btn-secondary btn-sm" onclick="declineCookies()">Decline</button>
+      <button class="btn btn-primary btn-sm" onclick="acceptCookies()">Accept Cookies</button>
+    </div>
+  </div>
+
+  <button class="back-top" id="back-top" aria-label="Back to top"><i class="fa-solid fa-arrow-up"></i></button>
+
+  <script src="assets/js/main.js"></script>
+  <script>
+    // ── Filter tabs ────────────────────────────────────────
+    const tabs  = document.querySelectorAll('.filter-tab');
+    const cards = document.querySelectorAll('#reviews-grid .review-card');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        const filter = tab.dataset.filter;
+        cards.forEach(card => {
+          const services = card.dataset.service || '';
+          if (filter === 'all' || services.includes(filter)) {
+            card.style.display = '';
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(16px)';
+            requestAnimationFrame(() => {
+              card.style.transition = 'all .35s ease';
+              card.style.opacity = '1';
+              card.style.transform = '';
+            });
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    // ── Animate rating bars on scroll ─────────────────────
+    const bars = document.querySelectorAll('.rating-bar-fill');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.style.width = e.target.style.width; // trigger reflow
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: .5 });
+    bars.forEach(b => observer.observe(b));
+  </script>
+</body>
+</html>
